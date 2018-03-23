@@ -1,6 +1,8 @@
 <?php
 namespace Payum\Checkoutcom\Action;
 
+use com\checkout\ApiClient;
+use com\checkout\ApiServices\Charges\ChargeService;
 use com\checkout\ApiServices\Charges\RequestModels\ChargeCapture;
 use com\checkout\helpers\ApiHttpClientCustomException;
 use Payum\Checkoutcom\Action\Api\BaseApiAwareAction;
@@ -27,7 +29,9 @@ class CaptureAction extends BaseApiAwareAction implements ActionInterface, Gatew
         $model = ArrayObject::ensureArrayObject($request->getModel());
         $model->validateNotEmpty(['amount', 'chargeId']);
 
+        /** @var ApiClient $checkoutApiClient */
         $checkoutApiClient = $this->api->getCheckoutApiClient();
+        /** @var ChargeService $chargeService */
         $chargeService = $checkoutApiClient->chargeService();
 
         $chargeCapturePayload = new ChargeCapture();

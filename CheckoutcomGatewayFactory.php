@@ -29,6 +29,7 @@ class CheckoutcomGatewayFactory extends GatewayFactory
             'payum.action.cancel' => new CancelAction(),
             'payum.action.status' => new StatusAction(),
             'payum.action.obtain_token' => new ObtainSnippetAction(),
+            'payum.action.convert_payment' => new ConvertPaymentAction(),
         ]);
 
         if (false == $config['payum.api']) {

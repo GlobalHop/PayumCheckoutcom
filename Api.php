@@ -11,6 +11,9 @@ class Api
     const TEST = 'test';
     const PRODUCTION = 'production';
 
+    const PAYMENT_TYPE_CARD_TOKEN = 'cardToken';
+    const PAYMENT_TYPE_CARD_ID = 'cardId';
+
     /**
      * @var HttpClientInterface
      */
