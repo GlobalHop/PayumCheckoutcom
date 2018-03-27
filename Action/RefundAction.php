@@ -6,6 +6,7 @@ use com\checkout\helpers\ApiHttpClientCustomException;
 use Payum\Checkoutcom\Action\Api\BaseApiAwareAction;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
+use Payum\Core\Exception\InvalidArgumentException;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
@@ -37,7 +38,7 @@ class RefundAction extends BaseApiAwareAction implements ActionInterface, Gatewa
         try {
             $chargeResponse = $chargeService->refundCardChargeRequest($chargeCapturePayload);
         } catch (ApiHttpClientCustomException $e) {
-            throw new \InvalidArgumentException($e->getErrorMessage(), $e->getCode());
+            throw new InvalidArgumentException($e->getErrorMessage(), $e->getCode());
         }
 
         $model['responseCode'] = $chargeResponse->getResponseCode();

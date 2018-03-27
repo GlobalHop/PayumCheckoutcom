@@ -44,7 +44,7 @@ class ConvertPaymentAction implements ActionInterface
     /**
      * @param ArrayObject $paymentDetails
      */
-    public function parseAutoCapture($paymentDetails): void
+    public function parseAutoCapture($paymentDetails)
     {
         if (
             null === $paymentDetails->offsetGet('autoCapture') ||

@@ -5,6 +5,7 @@ use com\checkout\ApiClient;
 use com\checkout\ApiServices\Charges\ChargeService;
 use com\checkout\ApiServices\Charges\RequestModels\ChargeCapture;
 use com\checkout\helpers\ApiHttpClientCustomException;
+use InvalidArgumentException;
 use Payum\Checkoutcom\Action\Api\BaseApiAwareAction;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -41,7 +42,7 @@ class CaptureAction extends BaseApiAwareAction implements ActionInterface, Gatew
         try {
             $chargeResponse = $chargeService->CaptureCardCharge($chargeCapturePayload);
         } catch (ApiHttpClientCustomException $e) {
-            throw new \InvalidArgumentException($e->getErrorMessage(), $e->getCode());
+            throw new InvalidArgumentException($e->getErrorMessage(), $e->getCode());
         }
 
         $model['responseCode'] = $chargeResponse->getResponseCode();
