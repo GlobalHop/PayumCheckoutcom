@@ -1,21 +1,13 @@
 <?php
 namespace Payum\Checkoutcom\Action\Api;
 
-use com\checkout\ApiServices\Charges\RequestModels\CardTokenChargeCreate;
-use com\checkout\ApiServices\SharedModels\Address;
-use com\checkout\helpers\ApiHttpClientCustomException;
-use Payum\Checkoutcom\Action\Api\BaseApiAwareAction;
 use Payum\Checkoutcom\Request\Api\ObtainSnippet;
-use Payum\Checkoutcom\Request\Api\ObtainToken;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
-use Payum\Core\Exception\InvalidArgumentException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpResponse;
-use Payum\Core\Request\Authorize;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Request\RenderTemplate;
 
 class ObtainSnippetAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface

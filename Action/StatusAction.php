@@ -40,6 +40,9 @@ class StatusAction implements ActionInterface
                 case 'Refunded':
                     $request->markRefunded();
                     break;
+                case 'Flagged':
+                    $request->markPending();
+                    break;
                 default:
                     $request->markUnknown();
                     break;
