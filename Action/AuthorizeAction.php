@@ -80,7 +80,7 @@ class AuthorizeAction extends BaseApiAwareAction implements ActionInterface, Gat
             $chargeResponse = $chargeService->chargeWithCardId($charge);
 
         } catch (ApiHttpClientCustomException $e) {
-            throw new InvalidArgumentException($e->getErrorMessage(), $e->getCode());
+            throw new InvalidArgumentException($e->getErrorMessage(), $e->getErrorCode(), $e);
         }
 
         $model['responseCode'] = $chargeResponse->getResponseCode();
@@ -131,7 +131,7 @@ class AuthorizeAction extends BaseApiAwareAction implements ActionInterface, Gat
             $chargeResponse = $chargeService->chargeWithCardToken($charge);
 
         } catch (ApiHttpClientCustomException $e) {
-            throw new InvalidArgumentException($e->getErrorMessage(), $e->getCode());
+            throw new InvalidArgumentException($e->getErrorMessage(), $e->getErrorCode(), $e);
         }
 
         $model['responseCode'] = $chargeResponse->getResponseCode();

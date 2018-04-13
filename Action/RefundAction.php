@@ -38,7 +38,7 @@ class RefundAction extends BaseApiAwareAction implements ActionInterface, Gatewa
         try {
             $chargeResponse = $chargeService->refundCardChargeRequest($chargeCapturePayload);
         } catch (ApiHttpClientCustomException $e) {
-            throw new InvalidArgumentException($e->getErrorMessage(), $e->getCode());
+            throw new InvalidArgumentException($e->getErrorMessage(), $e->getErrorCode(), $e);
         }
 
         $model['responseCode'] = $chargeResponse->getResponseCode();
