@@ -38,7 +38,7 @@ class CancelAction extends BaseApiAwareAction implements ActionInterface, Gatewa
             $chargeResponse = $chargeService->voidCharge($model['chargeId'], $chargePayload);
 
         } catch (ApiHttpClientCustomException $e) {
-            throw new InvalidArgumentException($e->getErrorMessage(), $e->getCode());
+            throw new InvalidArgumentException($e->getErrorMessage(), $e->getErrorCode(), $e);
         }
 
         $model['responseCode'] = $chargeResponse->getResponseCode();
