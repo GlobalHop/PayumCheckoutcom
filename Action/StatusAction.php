@@ -52,7 +52,7 @@ class StatusAction implements ActionInterface
         }
 
 
-        if (is_int($model['responseCode']) && $model['responseCode'] >= 20000 && $model['responseCode'] < 50000) {
+        if (is_numeric($model['responseCode']) && $model['responseCode'] >= 20000 && $model['responseCode'] < 50000) {
             $request->markFailed();
             return;
         }
