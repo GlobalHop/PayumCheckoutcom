@@ -8,7 +8,7 @@ use Payum\Core\HttpClientInterface;
 
 class Api
 {
-    const TEST = 'test';
+    const TEST = 'sandbox';
     const PRODUCTION = 'production';
 
     const PAYMENT_TYPE_CARD_TOKEN = 'cardToken';
@@ -48,7 +48,9 @@ class Api
      */
     public function getCheckoutApiClient()
     {
-        return new ApiClient($this->options['secrety_key']);
+        $env = (!empty($this->options['environment'])) ? $this->options['environment'] : Api::TEST;
+        
+        return new ApiClient($this->options['secrety_key'], $env);
     }
 
     /**
