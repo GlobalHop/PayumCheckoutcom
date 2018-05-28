@@ -10,6 +10,7 @@ use Payum\Checkoutcom\Action\CaptureAction;
 use Payum\Checkoutcom\Action\NotifyAction;
 use Payum\Checkoutcom\Action\RefundAction;
 use Payum\Checkoutcom\Action\StatusAction;
+use Payum\Checkoutcom\Action\VerifyTokenAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
 
@@ -29,6 +30,7 @@ class CheckoutcomGatewayFactory extends GatewayFactory
             'payum.action.cancel' => new CancelAction(),
             'payum.action.status' => new StatusAction(),
             'payum.action.obtain_token' => new ObtainSnippetAction(),
+            'payum.action.verify_token' => new VerifyTokenAction(),
             'payum.action.convert_payment' => new ConvertPaymentAction(),
         ]);
 
