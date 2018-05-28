@@ -1,4 +1,5 @@
 <?php
+
 namespace Payum\Checkoutcom;
 
 use com\checkout\ApiClient;

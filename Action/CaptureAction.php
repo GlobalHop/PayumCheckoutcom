@@ -40,14 +40,15 @@ class CaptureAction extends BaseApiAwareAction implements ActionInterface, Gatew
         $chargeCapturePayload->setValue($model['amount']);
 
         try {
-            $chargeResponse = $chargeService->CaptureCardCharge($chargeCapturePayload);
+            $captureResponse = $chargeService->CaptureCardCharge($chargeCapturePayload);
         } catch (ApiHttpClientCustomException $e) {
             throw new InvalidArgumentException($e->getErrorMessage(), $e->getErrorCode(), $e);
         }
 
-        $model['responseCode'] = $chargeResponse->getResponseCode();
-        $model['status'] = $chargeResponse->getStatus();
-        $model['chargeId'] = $chargeResponse->getId();
+        $model['responseCode'] = $captureResponse->getResponseCode();
+        $model['status'] = $captureResponse->getStatus();
+        $model['chargeId'] = $captureResponse->getId();
+        $model['json'] = $captureResponse->json;
     }
 
     /**

@@ -10,6 +10,7 @@ use com\checkout\ApiServices\Charges\RequestModels\CardTokenChargeCreate;
 use com\checkout\helpers\ApiHttpClientCustomException;
 use Payum\Checkoutcom\Action\Api\BaseApiAwareAction;
 use Payum\Checkoutcom\Api;
+use Payum\Checkoutcom\Request\Api\VerifyToken;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\InvalidArgumentException;
@@ -19,7 +20,7 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Authorize;
 
-class AuthorizeAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface
+class VerifyTokenAction extends BaseApiAwareAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
@@ -36,11 +37,7 @@ class AuthorizeAction extends BaseApiAwareAction implements ActionInterface, Gat
 
         $model->validateNotEmpty(
             [
-                'amount',
-                'currency',
-                'trackId',
-                'paymentToken',
-                'customerEmail',
+                'chargeId',
             ]
         );
 
@@ -48,112 +45,13 @@ class AuthorizeAction extends BaseApiAwareAction implements ActionInterface, Gat
         $checkoutApiClient = $this->api->getCheckoutApiClient();
         $chargeService = $checkoutApiClient->chargeService();
 
-        switch ($model->offsetGet('paymentType')) {
-            case Api::PAYMENT_TYPE_CARD_TOKEN:
-                $result = $this->chargeCardToken($chargeService, $model);
-                break;
-            case Api::PAYMENT_TYPE_CARD_ID:
-                $result = $this->chargeCardId($chargeService, $model);
-                break;
-            default:
-                throw new LogicException(
-                    sprintf('The paymentType %s is not supported.', $model['paymentType'])
-                );
-                break;
-        }
-
-
-        return $result;
-    }
-
-    /**
-     * @param ChargeService $chargeService
-     * @param ArrayObject   $model
-     *
-     * @return ArrayObject
-     */
-    protected function chargeCardId(ChargeService $chargeService, ArrayObject $model)
-    {
-        $cardIdCharge = new CardIdChargeCreate();
-        $this->buildCharge($cardIdCharge, $model);
-
         try {
-            $chargeResponse = $chargeService->chargeWithCardId($cardIdCharge);
-
+            $verifyTokenResponse = $chargeService->verifyCharge($model['chargeId']);
         } catch (ApiHttpClientCustomException $e) {
             throw new InvalidArgumentException($e->getErrorMessage(), $e->getErrorCode(), $e);
         }
 
-        return $this->buildResponse($model, $chargeResponse);
-    }
-
-    /**
-     * @param ChargeService $chargeService
-     * @param ArrayObject   $model
-     *
-     * @return ArrayObject
-     */
-    protected function chargeCardToken($chargeService, $model)
-    {
-        $cardTokenCharge = new CardTokenChargeCreate();
-        $this->buildCharge($cardTokenCharge, $model);
-
-
-        try {
-            $chargeResponse = $chargeService->chargeWithCardToken($cardTokenCharge);
-        } catch (ApiHttpClientCustomException $e) {
-            throw new InvalidArgumentException($e->getErrorMessage(), $e->getErrorCode(), $e);
-        }
-
-        return $this->buildResponse($model, $chargeResponse);
-    }
-
-
-    /**
-     * @param CardIdChargeCreate|CardTokenChargeCreate  $charge
-     * @param ArrayObject $model
-     */
-    protected function buildCharge($charge, $model)
-    {
-        $charge->setEmail($model['customerEmail']);
-        $charge->setAutoCapture($model['autoCapture'] === true ? 'Y' : 'N');
-        $charge->setAutoCapTime($model['autoCapTime']);
-        $charge->setValue($model['amount']);
-        $charge->setCurrency($model['currency']);
-        $charge->setTrackId($model['trackId']);
-        $charge->setCardToken($model['paymentToken']);
-        $charge->setDescription($model['description']);
-
-        if (isset($model['customerName']) && !empty($model['customerName'])) {
-            $charge->setCustomerName($model['customerName']);
-        }
-
-
-        if (isset($model['transactionIndicator'])) {
-            $charge->setTransactionIndicator($model['transactionIndicator']);
-        }
-
-        if (isset($model['chargeMode'])) {
-            $charge->setChargeMode($model['chargeMode']);
-        }
-
-        if (isset($model['successUrl'])) {
-            $charge->setSuccessUrl($model['successUrl']);
-        }
-
-        if (isset($model['failUrl'])) {
-            $charge->setFailUrl($model['failUrl']);
-        }
-
-        if (isset($model['attemptN3D'])) {
-            $charge->setAttemptN3D($model['attemptN3D']);
-        }
-        $charge->setCustomerId(!empty($model['customerIp']) ? $model['customerIp'] : null);
-        $products = $this->convertProducts($model);
-        foreach ($products as $product) {
-              $charge->setProducts($product);
-        }
-
+        return $this->buildResponse($model, $verifyTokenResponse);
     }
 
     /**
@@ -240,7 +138,7 @@ class AuthorizeAction extends BaseApiAwareAction implements ActionInterface, Gat
     public function supports($request)
     {
         return
-            $request instanceof Authorize &&
+            $request instanceof VerifyToken &&
             $request->getModel() instanceof \ArrayAccess;
     }
 }
