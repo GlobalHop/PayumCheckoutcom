@@ -121,13 +121,18 @@ class AuthorizeAction extends BaseApiAwareAction implements ActionInterface, Gat
         $charge->setValue($model['amount']);
         $charge->setCurrency($model['currency']);
         $charge->setTrackId($model['trackId']);
-        $charge->setCardToken($model['paymentToken']);
+
+        if ($charge instanceof CardIdChargeCreate) {
+            $charge->setCardId($model['paymentToken']);
+        } elseif ($charge instanceof CardTokenChargeCreate) {
+            $charge->setCardToken($model['paymentToken']);
+        }
+
         $charge->setDescription($model['description']);
 
         if (isset($model['customerName']) && !empty($model['customerName'])) {
             $charge->setCustomerName($model['customerName']);
         }
-
 
         if (isset($model['transactionIndicator'])) {
             $charge->setTransactionIndicator($model['transactionIndicator']);
