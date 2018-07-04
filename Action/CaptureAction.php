@@ -48,6 +48,7 @@ class CaptureAction extends BaseApiAwareAction implements ActionInterface, Gatew
         $model['responseCode'] = $captureResponse->getResponseCode();
         $model['status'] = $captureResponse->getStatus();
         $model['chargeId'] = $captureResponse->getId();
+        $model['responseMessage'] = $captureResponse->getResponseMessage();
         $model['json'] = $captureResponse->json;
     }
 
