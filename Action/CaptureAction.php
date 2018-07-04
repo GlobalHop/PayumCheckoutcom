@@ -5,7 +5,7 @@ use com\checkout\ApiClient;
 use com\checkout\ApiServices\Charges\ChargeService;
 use com\checkout\ApiServices\Charges\RequestModels\ChargeCapture;
 use com\checkout\helpers\ApiHttpClientCustomException;
-use InvalidArgumentException;
+use Payum\Core\Exception\InvalidArgumentException;
 use Payum\Checkoutcom\Action\Api\BaseApiAwareAction;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
