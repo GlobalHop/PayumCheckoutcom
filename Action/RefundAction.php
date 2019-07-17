@@ -1,9 +1,9 @@
 <?php
 namespace Payum\Checkoutcom\Action;
 
-use com\checkout\ApiServices\Charges\RequestModels\ChargeRefund;
 use com\checkout\helpers\ApiHttpClientCustomException;
 use Payum\Checkoutcom\Action\Api\BaseApiAwareAction;
+use Payum\Checkoutcom\RequestModels\ChargeRefund;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\InvalidArgumentException;
@@ -31,12 +31,16 @@ class RefundAction extends BaseApiAwareAction implements ActionInterface, Gatewa
         $checkoutApiClient = $this->api->getCheckoutApiClient();
         $chargeService = $checkoutApiClient->chargeService();
 
-        $chargeCapturePayload = new ChargeRefund();
-        $chargeCapturePayload->setChargeId($model['chargeId']);
-        $chargeCapturePayload->setValue($model['amount']);
+        $refundPayload = new ChargeRefund();
+        $refundPayload->setChargeId($model['chargeId']);
+        $refundPayload->setValue($model['amount']);
+
+        if (isset($model['trackId'])) {
+            $refundPayload->setTrackId(isset($model['trackId']));
+        }
 
         try {
-            $chargeResponse = $chargeService->refundCardChargeRequest($chargeCapturePayload);
+            $chargeResponse = $chargeService->refundCardChargeRequest($refundPayload);
         } catch (ApiHttpClientCustomException $e) {
             throw new InvalidArgumentException($e->getErrorMessage(), $e->getErrorCode(), $e);
         }
