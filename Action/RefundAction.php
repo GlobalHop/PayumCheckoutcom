@@ -36,7 +36,7 @@ class RefundAction extends BaseApiAwareAction implements ActionInterface, Gatewa
         $refundPayload->setValue($model['amount']);
 
         if (isset($model['trackId'])) {
-            $refundPayload->setTrackId(isset($model['trackId']));
+            $refundPayload->setTrackId($model['trackId']);
         }
 
         try {
