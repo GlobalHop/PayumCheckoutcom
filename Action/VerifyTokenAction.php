@@ -82,6 +82,7 @@ class VerifyTokenAction extends BaseApiAwareAction implements ActionInterface, G
             $model['card'] = [
                 'cardId' => $cardDetails->getId(),
                 'cardLast4' => $cardDetails->getLast4(),
+                'cardFingerprint' => $cardDetails->getFingerprint(),
                 'cardExpiryYear' => $cardDetails->getExpiryYear(),
                 'cardExpiryMonth' => $cardDetails->getExpiryMonth(),
                 'cardType' => $cardDetails->getPaymentMethod(),
