@@ -189,6 +189,7 @@ class AuthorizeAction extends BaseApiAwareAction implements ActionInterface, Gat
             $model['card'] = [
                 'cardId' => $cardDetails->getId(),
                 'cardLast4' => $cardDetails->getLast4(),
+                'cardFingerprint' => $cardDetails->getFingerprint(),
                 'cardExpiryYear' => $cardDetails->getExpiryYear(),
                 'cardExpiryMonth' => $cardDetails->getExpiryMonth(),
                 'cardType' => $cardDetails->getPaymentMethod(),
